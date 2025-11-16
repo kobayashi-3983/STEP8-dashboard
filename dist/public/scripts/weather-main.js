@@ -1,5 +1,4 @@
 "use strict";
-// === API KEY はフロントに置かない ===
 const cities = [
     { region: '北海道', name: '札幌', lat: 43.0621, lon: 141.3544 },
     { region: '北海道', name: '釧路', lat: 42.9849, lon: 144.3813 },
