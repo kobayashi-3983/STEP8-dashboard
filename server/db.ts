@@ -1,142 +1,137 @@
-// ======================================================
-// 🌟 StackBlitz（開発）＝メモリDB
-// 🌟 Vercel（本番）＝NeonDB
-// ======================================================
-
-import dotenv from 'dotenv';
-import pkg from 'pg';
-
+// server/db.ts
+import { Pool } from "pg";
+import dotenv from "dotenv";
 dotenv.config();
 
-const { Pool } = pkg;
+const isProduction = !!process.env.DATABASE_URL;
 
-// ------------------------------------------------------
-// ⭐ StackBlitz では外部DB接続できないため、強制的にメモリDB
-// ------------------------------------------------------
-const isStackBlitz =
-  typeof process !== 'undefined' && process.env.NODE_ENV !== 'production'; // これで本番だけ false
+// ===============================
+// FakeDB 用ストレージ
+// ===============================
+let memCalendar: any[] = [];
+let memKanban: any[] = [];
 
-console.log('DB MODE:', isStackBlitz ? '🧪 Fake In-Memory DB' : '🌐 NeonDB');
+function parseUpdate(sql: string, params: any[]) {
+  const setMatch = sql.match(/SET([\s\S]*?)WHERE/i);
+  if (!setMatch) return {};
 
-// ======================================================
-// 🧪 StackBlitz（開発モード）：Fake In-Memory DB
-// ======================================================
-if (isStackBlitz) {
-  let memCalendar: any[] = [];
-  let memKanban: any[] = [];
+  const setPart = setMatch[1].trim();
+  const parts = setPart.split(",").map((s) => s.trim());
 
-  function parseUpdate(sql: string, params: any[]) {
-    const setMatch = sql.match(/SET([\s\S]*?)WHERE/i);
-    if (!setMatch) return {};
-    const setPart = setMatch[1].trim();
-    const keyValueParts = setPart.split(',').map((s) => s.trim());
-    const result: any = {};
-    keyValueParts.forEach((part, i) => {
-      const [key] = part.split('=').map((s) => s.trim());
-      result[key] = params[i];
-    });
-    return result;
-  }
-
-  export const pool: any = {
-    async query(sql: string, params: any[] = []) {
-      sql = sql.trim();
-
-      // ----- Calendar SELECT -----
-      if (sql.startsWith('SELECT') && sql.includes('calendar_events')) {
-        return { rows: memCalendar, rowCount: memCalendar.length };
-      }
-
-      // ----- Calendar INSERT -----
-      if (sql.startsWith('INSERT INTO calendar_events')) {
-        const item = {
-          id: memCalendar.length + 1,
-          date: params[0],
-          text: params[1],
-          created_at: new Date(),
-          updated_at: new Date(),
-        };
-        memCalendar.push(item);
-        return { rows: [item], rowCount: 1 };
-      }
-
-      // ----- Calendar DELETE -----
-      if (sql.startsWith('DELETE FROM calendar_events')) {
-        const id = params[0];
-        const before = memCalendar.length;
-        memCalendar = memCalendar.filter((e) => e.id !== id);
-        return { rows: [], rowCount: before - memCalendar.length };
-      }
-
-      // ----- Kanban SELECT -----
-      if (sql.startsWith('SELECT') && sql.includes('kanban_cards')) {
-        return { rows: memKanban, rowCount: memKanban.length };
-      }
-
-      // ----- Kanban INSERT -----
-      if (sql.startsWith('INSERT INTO kanban_cards')) {
-        const item = {
-          id: memKanban.length + 1,
-          title: params[0],
-          description: params[1],
-          status: params[2],
-          dateStart: params[3],
-          dateEnd: params[4],
-          checklist: JSON.parse(params[5] || '[]'),
-          created_at: new Date(),
-          updated_at: new Date(),
-        };
-        memKanban.push(item);
-        return { rows: [item], rowCount: 1 };
-      }
-
-      // ----- Kanban UPDATE -----
-      if (sql.startsWith('UPDATE kanban_cards')) {
-        const id = params[params.length - 1];
-        const item = memKanban.find((t) => t.id === id);
-        if (!item) return { rows: [], rowCount: 0 };
-
-        const fields = parseUpdate(sql, params);
-
-        if ('checklist' in fields && typeof fields.checklist === 'string') {
-          fields.checklist = JSON.parse(fields.checklist);
-        }
-
-        if ('date_start' in fields) {
-          fields.dateStart = fields.date_start;
-          delete fields.date_start;
-        }
-        if ('date_end' in fields) {
-          fields.dateEnd = fields.date_end;
-          delete fields.date_end;
-        }
-
-        Object.assign(item, fields);
-        item.updated_at = new Date();
-
-        return { rows: [item], rowCount: 1 };
-      }
-
-      // ----- Kanban DELETE -----
-      if (sql.startsWith('DELETE FROM kanban_cards')) {
-        const id = params[0];
-        const before = memKanban.length;
-        memKanban = memKanban.filter((t) => t.id !== id);
-        return { rows: [], rowCount: before - memKanban.length };
-      }
-
-      return { rows: [], rowCount: 0 };
-    },
-  };
-
-  // FakeDB モードはここで終了
-}
-// ======================================================
-// 🌐 本番（Vercel）：NeonDB（PostgreSQL）
-// ======================================================
-else {
-  export const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
+  const result: any = {};
+  parts.forEach((part, i) => {
+    const [key] = part.split("=").map((s) => s.trim());
+    result[key] = params[i];
   });
+
+  return result;
 }
+
+// ===============================
+// 🌟 FakeDB モード
+// ===============================
+const fakePool = {
+  async query(sql: string, params: any[] = []) {
+    sql = sql.trim();
+
+    // Calendar SELECT
+    if (sql.startsWith("SELECT") && sql.includes("calendar_events")) {
+      return { rows: memCalendar, rowCount: memCalendar.length };
+    }
+
+    // Calendar INSERT
+    if (sql.startsWith("INSERT INTO calendar_events")) {
+      const item = {
+        id: memCalendar.length + 1,
+        date: params[0],
+        text: params[1],
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+      memCalendar.push(item);
+      return { rows: [item], rowCount: 1 };
+    }
+
+    // Calendar DELETE
+    if (sql.startsWith("DELETE FROM calendar_events")) {
+      const id = params[0];
+      const before = memCalendar.length;
+      memCalendar = memCalendar.filter((e) => e.id !== id);
+      return { rows: [], rowCount: before - memCalendar.length };
+    }
+
+    // Kanban SELECT
+    if (sql.startsWith("SELECT") && sql.includes("kanban_cards")) {
+      return { rows: memKanban, rowCount: memKanban.length };
+    }
+
+    // Kanban INSERT
+    if (sql.startsWith("INSERT INTO kanban_cards")) {
+      const item = {
+        id: memKanban.length + 1,
+        title: params[0],
+        description: params[1],
+        status: params[2],
+        dateStart: params[3],
+        dateEnd: params[4],
+        checklist: JSON.parse(params[5] || "[]"),
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+      memKanban.push(item);
+      return { rows: [item], rowCount: 1 };
+    }
+
+    // Kanban UPDATE
+    if (sql.startsWith("UPDATE kanban_cards")) {
+      const id = params[params.length - 1];
+      const item = memKanban.find((t) => t.id === id);
+      if (!item) return { rows: [], rowCount: 0 };
+
+      const fields = parseUpdate(sql, params);
+
+      if ("checklist" in fields) {
+        try {
+          fields.checklist = JSON.parse(fields.checklist);
+        } catch {}
+      }
+
+      if ("date_start" in fields) {
+        fields.dateStart = fields.date_start;
+        delete fields.date_start;
+      }
+      if ("date_end" in fields) {
+        fields.dateEnd = fields.date_end;
+        delete fields.date_end;
+      }
+
+      Object.assign(item, fields);
+      item.updated_at = new Date();
+
+      return { rows: [item], rowCount: 1 };
+    }
+
+    // Kanban DELETE
+    if (sql.startsWith("DELETE FROM kanban_cards")) {
+      const id = params[0];
+      const before = memKanban.length;
+      memKanban = memKanban.filter((t) => t.id !== id);
+      return { rows: [], rowCount: before - memKanban.length };
+    }
+
+    return { rows: [], rowCount: 0 };
+  },
+};
+
+// ===============================
+// 🌍 NeonDB モード
+// ===============================
+const realPool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+});
+
+// ===============================
+// 🌟 export（分岐なしで固定 export）
+// ===============================
+export const pool = isProduction ? realPool : fakePool;
