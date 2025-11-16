@@ -1,20 +1,30 @@
 // ======================================================
-// 🌟 FakeDB（StackBlitz） + NeonDB（本番）自動切り替え
+// 🌟 FakeDB（開発） + NeonDB（本番）自動切り替え
 // ======================================================
 
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 dotenv.config();
 
+// ------------------------------------------------------
+// 本番を判定
+// ------------------------------------------------------
 const isProduction = !!process.env.DATABASE_URL;
 
-let pool: any;
+// トップレベルで export（条件分岐の中で export しない）
+// これが Vercel / TypeScript の正解
+export const pool: any = isProduction
+  ? new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+    })
+  : createFakeDB();
 
-// ======================================================
-// 🧪 FakeDB（StackBlitz）
-// ======================================================
-if (!isProduction) {
-  console.log("🧪 Using Fake In-Memory DB (StackBlitz Mode)");
+// ------------------------------------------------------
+// 🧪 FakeDB（StackBlitz / ローカル用）
+// ------------------------------------------------------
+function createFakeDB() {
+  console.log("🧪 Using Fake In-Memory DB (Dev Mode)");
 
   let memCalendar: any[] = [];
   let memKanban: any[] = [];
@@ -22,25 +32,27 @@ if (!isProduction) {
   function parseUpdate(sql: string, params: any[]) {
     const setMatch = sql.match(/SET([\s\S]*?)WHERE/i);
     if (!setMatch) return {};
-    const setPart = setMatch[1].trim();
-    const keyValueParts = setPart.split(",").map((s) => s.trim());
-    const result: any = {};
-    keyValueParts.forEach((part, i) => {
-      const [key] = part.split("=").map((s) => s.trim());
-      result[key] = params[i];
+    const parts = setMatch[1].trim().split(",").map((s) => s.trim());
+    const map: any = {};
+    parts.forEach((p, i) => {
+      const [key] = p.split("="); 
+      map[key.trim()] = params[i];
     });
-    return result;
+    return map;
   }
 
-  pool = {
+  return {
     async query(sql: string, params: any[] = []) {
       sql = sql.trim();
 
-      // --- Calendar ---
+      // -------------------------------
+      // Calendar SELECT
+      // -------------------------------
       if (sql.startsWith("SELECT") && sql.includes("calendar_events")) {
         return { rows: memCalendar, rowCount: memCalendar.length };
       }
 
+      // Calendar INSERT
       if (sql.startsWith("INSERT INTO calendar_events")) {
         const item = {
           id: memCalendar.length + 1,
@@ -53,6 +65,7 @@ if (!isProduction) {
         return { rows: [item], rowCount: 1 };
       }
 
+      // Calendar DELETE
       if (sql.startsWith("DELETE FROM calendar_events")) {
         const id = params[0];
         const before = memCalendar.length;
@@ -60,11 +73,14 @@ if (!isProduction) {
         return { rows: [], rowCount: before - memCalendar.length };
       }
 
-      // --- Kanban ---
+      // -------------------------------
+      // Kanban SELECT
+      // -------------------------------
       if (sql.startsWith("SELECT") && sql.includes("kanban_cards")) {
         return { rows: memKanban, rowCount: memKanban.length };
       }
 
+      // Kanban INSERT
       if (sql.startsWith("INSERT INTO kanban_cards")) {
         const item = {
           id: memKanban.length + 1,
@@ -81,6 +97,7 @@ if (!isProduction) {
         return { rows: [item], rowCount: 1 };
       }
 
+      // Kanban UPDATE
       if (sql.startsWith("UPDATE kanban_cards")) {
         const id = params[params.length - 1];
         const item = memKanban.find((t) => t.id === id);
@@ -89,7 +106,9 @@ if (!isProduction) {
         const fields = parseUpdate(sql, params);
 
         if ("checklist" in fields && typeof fields.checklist === "string") {
-          fields.checklist = JSON.parse(fields.checklist);
+          try {
+            fields.checklist = JSON.parse(fields.checklist);
+          } catch {}
         }
 
         if ("date_start" in fields) {
@@ -107,6 +126,7 @@ if (!isProduction) {
         return { rows: [item], rowCount: 1 };
       }
 
+      // Kanban DELETE
       if (sql.startsWith("DELETE FROM kanban_cards")) {
         const id = params[0];
         const before = memKanban.length;
@@ -118,17 +138,3 @@ if (!isProduction) {
     },
   };
 }
-
-// ======================================================
-// 🌍 本番（NeonDB）
-// ======================================================
-else {
-  console.log("🌐 Using NeonDB (Production Mode)");
-
-  pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
-  });
-}
-
-export { pool };
