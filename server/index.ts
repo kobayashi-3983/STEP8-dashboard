@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import kanbanRoutes from './routes/kanban';
 import calendarRoutes from './routes/calendar';
 import weatherRoutes from './routes/weather';
-import { pool } from './db';   // ← pool だけ
+import { pool } from './db';
 
 dotenv.config();
 
@@ -14,12 +14,12 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// API ルート
+// API routes
 app.use('/api/kanban', kanbanRoutes);
 app.use('/api/calendar', calendarRoutes);
 app.use('/api/weather', weatherRoutes);
 
-// dist/public を静的配信
+// static frontend (dist/public)
 app.use('/', express.static('dist/public'));
 
 // health check
@@ -32,6 +32,7 @@ app.get('/health', async (req, res) => {
   }
 });
 
+// server start
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
