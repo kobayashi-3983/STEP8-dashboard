@@ -6,7 +6,7 @@
 const API_BASE_URL =
   window.location.hostname.includes("localhost")
     ? "http://localhost:3000"
-    : "https://step8-personal-dashboard-ao22.vercel.app"; 
+    : "https://step-8-dashboard-f93w.vercel.app"; 
 export class APIClient {
   constructor(private base: string = API_BASE_URL) {}
 
