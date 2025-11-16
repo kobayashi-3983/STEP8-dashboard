@@ -1,0 +1,417 @@
+@charset "UTF-8";
+
+.header-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 中央寄せ */
+  gap: 10px; /* タイトルとリンクの間の余白 */
+}
+
+/* ===============================
+   📅 カレンダー全体
+   =============================== */
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+  background: #f4f7fb;
+  min-height: calc(100vh - 160px); /* ヘッダー＋フッター除いた高さ */
+}
+
+#calendar {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  width: 100%;
+  max-width: 850px;
+  box-sizing: border-box;
+}
+
+/* ===============================
+   📅 ヘッダー部分（月移動）
+   =============================== */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.calendar-header h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.calendar-header button {
+  background: #60a5fa;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.calendar-header button:hover {
+  background: #3b82f6;
+  transform: scale(1.05);
+}
+
+/* ===============================
+   🗓 カレンダーグリッド
+   =============================== */
+#calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+/* 曜日ヘッダー */
+.calendar-day-name {
+  background: #f3f4f6;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 0;
+  border-radius: 8px;
+  color: #333;
+  user-select: none;
+}
+
+/* ===============================
+   📆 日付セル
+   =============================== */
+.calendar-day {
+  background: #fff;
+  border-radius: 10px;
+  text-align: center;
+  padding: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  cursor: pointer;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.calendar-day:hover {
+  transform: scale(1.05);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* 日付番号 */
+.date-number {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-top: 4px;
+}
+
+/* 今日 */
+.calendar-day.today {
+  border: 2px solid #60a5fa;
+  background: #eff6ff;
+}
+
+/* 予定あり */
+.calendar-day .event {
+  background: #4ade80;
+  color: white;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 0.8em;
+  margin-top: 6px;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 空白セル */
+.calendar-day.empty {
+  background: transparent;
+  box-shadow: none;
+  cursor: default;
+}
+
+/* ===============================
+   💬 モーダル関連（補完）
+   =============================== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.modal-content textarea {
+  width: 100%;
+  height: 80px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  resize: none;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.primary-btn {
+  background: #4ade80;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.primary-btn:hover {
+  background: #22c55e;
+}
+
+.secondary-btn {
+  background: #ccc;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.secondary-btn:hover {
+  background: #b0b0b0;
+}
+
+/* ===============================
+   📱 レスポンシブ対応
+   =============================== */
+@media (max-width: 600px) {
+  .calendar-container {
+    padding: 20px 10px;
+  }
+
+  #calendar {
+    padding: 16px;
+  }
+
+  .calendar-header h2 {
+    font-size: 1.2em;
+  }
+
+  .calendar-header button {
+    padding: 4px 8px;
+  }
+
+  #calendar-grid {
+    gap: 6px;
+  }
+
+  .calendar-day {
+    font-size: 0.85em;
+  }
+}
+.event-list-section {
+  margin-top: 30px;
+  padding: 30px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+
+.event-list-section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+#event-list ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+#event-list li {
+  padding: 6px 0;
+  border-bottom: 1px solid #ddd;
+}
+/* ✅ イベント削除ボタン */
+.delete-btn {
+  margin-left: 10px;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+/* ✅ 長文対策（枠が肥大化しないように） */
+/* ===============================
+   🗑️ 削除ボタンと長文対策
+   =============================== */
+.delete-btn {
+  margin-left: 10px;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+.event {
+  max-height: 1.8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modal-content textarea {
+  max-height: 100px;
+  overflow-y: auto;
+  resize: vertical;
+}
+
+#calendar {
+  overflow: hidden;
+}
+/* ✅ 長文イベントを折り返して表示 */
+.calendar-day {
+  background: #fff;
+  border-radius: 10px;
+  text-align: center;
+  padding: 10px;
+  height: 110px; /* ✅ 高さ固定 */
+  overflow-y: auto; /* ✅ 長文でもはみ出さない */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.calendar-day .event {
+  background: #4ade80;
+  color: white;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 0.8em;
+  margin-top: 6px;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+/* =========================================================
+   📱 カレンダーメインページ スマホ最適化
+========================================================= */
+@media (max-width: 700px) {
+  /* 全体を縦配置に変更 */
+  .calendar-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+  }
+
+  /* 予定一覧を上に */
+  .event-list-section {
+    order: -1; /* ← カレンダーより前に表示 */
+    width: 100%;
+    max-width: 480px;
+  }
+
+  /* カレンダー本体を小さめに */
+  #calendar {
+    width: 100%;
+    max-width: 480px;
+    padding: 16px;
+  }
+
+  /* 月タイトル・ボタン縮小 */
+  .calendar-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .calendar-header button {
+    padding: 4px 8px;
+    font-size: 0.9rem;
+  }
+
+  /* カレンダーのマス縮小 */
+  #calendar-grid {
+    gap: 4px;
+  }
+
+  .calendar-day {
+    height: 70px; /* ← 高さ縮小 */
+    padding: 4px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+  }
+
+  .date-number {
+    font-size: 1rem;
+  }
+
+  /* イベント文字の縮小 */
+  .calendar-day .event {
+    font-size: 0.65rem;
+    -webkit-line-clamp: 1;
+  }
+
+  /* 曜日ヘッダーも縮小 */
+  .calendar-day-name {
+    padding: 6px 0;
+    font-size: 0.8rem;
+  }
+}

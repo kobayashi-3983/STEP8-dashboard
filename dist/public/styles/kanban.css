@@ -1,0 +1,211 @@
+@charset "UTF-8";
+
+body {
+  background: #f4f7fb;
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.main-text {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.main-text h1 {
+  margin-bottom: 6px;
+}
+
+.back-link {
+  display: inline-block;
+  color: #555;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.search-area {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+.search-text {
+  width: 300px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  height: 30px;
+  padding-left: 10px;
+}
+
+#board {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: nowrap;
+}
+
+.column {
+  background: #fff;
+  flex: 1;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  min-height: 400px;
+  max-width: 260px;
+}
+
+.column h2 {
+  text-align: center;
+  color: #fff;
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.not-stated-col h2 {
+  background-color: #fca5a5;
+}
+
+.in-progress-col h2 {
+  background-color: #fbbf24;
+}
+
+.complete-col h2 {
+  background-color: #4ade80;
+}
+
+.end-col h2 {
+  background-color: #60a5fa;
+}
+
+.pending-col h2 {
+  background-color: #9ca3af;
+}
+
+.task {
+  background: #f9fafb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  cursor: grab;
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+.task-action {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.task h4 {
+  margin: 10px 0 15px;
+}
+
+.edit-task,
+.delete-task {
+  border: none;
+  border-radius: 10px;
+  padding: 3px 6px;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.edit-task:hover,
+.delete-task:hover {
+  background-color: rgb(211, 211, 211);
+}
+
+.add-task-btn {
+  display: block;
+  margin: 10px auto 0px;
+  border-radius: 50px;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-task-btn:hover {
+  background-color: rgb(211, 211, 211);
+}
+
+.add-check-btn {
+  border: 1px solid #ccc;
+  background-color: white;
+  margin: 10px 0px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: red;
+}
+
+.dates {
+  font-size: 12px;
+  margin-bottom: 15px;
+  color: rgb(105, 105, 105);
+}
+
+.checklist {
+  padding-bottom: 1px;
+  font-size: 12px;
+}
+
+.checklist input:checked + span {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.checklist label {
+  display: flex;
+  align-items: center;
+  padding: 3px;
+}
+
+.checklist label span {
+  flex: 1;
+  cursor: pointer;
+}
+
+.del-check {
+  background: none;
+  cursor: pointer;
+  color: red;
+  border: none;
+}
+/* =========================================================
+   📱 カンバンボード（個別ページ）スマホ最適化
+========================================================= */
+@media (max-width: 700px) {
+
+  #board {
+    flex-direction: column;   /* ← 縦に積む */
+    gap: 20px;
+    align-items: center;
+  }
+
+  .column {
+    width: 100%;
+    max-width: 380px; /* ← 幅をスマホにフィット */
+  }
+
+  .column h2 {
+    font-size: 1rem;
+  }
+
+  .task {
+    font-size: 0.9rem;
+  }
+
+  .search-area {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .search-text {
+    width: 90%;
+  }
+}

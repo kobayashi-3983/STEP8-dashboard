@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>パーソナルダッシュボード</title>
+
+    <link rel="stylesheet" href="./styles/main.css" />
+  </head>
+
+  <body>
+    <!-- 🌗 テーマ + ⚙ 設定（横並び） -->
+    <div class="theme-toggle">
+      <button id="light-btn" class="theme-btn active">☀</button>
+      <button id="dark-btn" class="theme-btn">☽</button>
+      <button id="settings-btn" class="settings-btn">⚙</button>
+    </div>
+
+    <header class="header">
+      <h1>🌟 パーソナルダッシュボード</h1>
+    </header>
+
+    <main class="dashboard-widgets">
+      <!-- 🪧 カンバンボード -->
+      <section class="widget kanban-widget" id="widget-kanban">
+        <h3>🪧カンバンボード</h3>
+        <div id="kanban-widget-board"></div>
+      </section>
+
+      <!-- ⛅ 天気ウィジェット -->
+      <div class="widget weather-widget" id="widget-weather">
+        <h1>⛅ 天気アプリ</h1>
+        <p>Loading...</p>
+      </div>
+
+      <!-- 📅 カレンダー -->
+      <div class="widget calendar-widget" id="widget-calendar">
+        <h2>📅カレンダー</h2>
+        <div id="calendar-preview" class="calendar-preview">
+          <div class="calendar-today">
+            <strong id="today-date">--月--日（--）</strong>
+          </div>
+          <div class="calendar-today-events">
+            <h3>今日の予定</h3>
+            <ul id="today-events">
+              <li>読み込み中...</li>
+            </ul>
+          </div>
+          <div class="calendar-next-events">
+            <h3>次の予定</h3>
+            <ul id="next-events">
+              <li>読み込み中...</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>© 2025 Personal Dashboard</p>
+    </footer>
+
+    <!-- ⚙ ガラス風設定モーダル -->
+    <div id="settings-modal" class="modal hidden">
+      <div class="modal-content glass">
+        <h2>ウィジェット設定</h2>
+
+        <label><input type="checkbox" id="set-kanban"> カンバンを表示</label><br>
+        <label><input type="checkbox" id="set-weather"> 天気を表示</label><br>
+        <label><input type="checkbox" id="set-calendar"> カレンダーを表示</label><br>
+
+        <button id="settings-save" class="save-btn">保存</button>
+      </div>
+    </div>
+
+    <script type="module" src="/scripts/main.js"></script>
+  </body>
+</html>

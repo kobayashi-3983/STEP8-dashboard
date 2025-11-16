@@ -1,0 +1,688 @@
+@charset "UTF-8";
+
+/* --------------------
+   共通デザイン
+-------------------- */
+body {
+  background: #f4f7fb;
+  padding: 50px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+header {
+  text-align: center;
+  margin: 100px;
+}
+
+.main-text h1 {
+  text-align: center;
+}
+/* --------------------
+   フッター
+-------------------- */
+.footer {
+  width: 100%;
+  text-align: center;
+  margin-top: 40px;
+}
+
+@media (max-width: 700px) {
+  .footer {
+    margin-top: 60px;
+  }
+}
+
+/* --------------------
+   カレンダーウィジェット
+-------------------- */
+.calendar-widget {
+  padding: 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.calendar-widget .calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.calendar-widget .calendar-header h2 {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.calendar-widget button {
+  background: #e5e7eb;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.calendar-widget button:hover {
+  background: #d1d5db;
+}
+
+.calendar-widget .calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.calendar-widget th {
+  background: #f1f5f9;
+  padding: 6px;
+  font-weight: bold;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.calendar-widget td {
+  width: 14%;
+  height: 80px;
+  vertical-align: top;
+  border: 1px solid #f1f5f9;
+  position: relative;
+  padding: 4px;
+  transition: background 0.1s;
+}
+
+.calendar-widget td:hover {
+  background: #f9fafb;
+}
+
+.calendar-widget .calendar-day.today {
+  background-color: #fff7cc;
+  border: 2px solid #facc15;
+}
+
+.calendar-widget .calendar-day .date-num {
+  font-weight: bold;
+}
+
+.calendar-widget .event {
+  font-size: 0.8em;
+  background: #4caf50;
+  color: white;
+  border-radius: 4px;
+  margin: 2px 0;
+  padding: 2px 4px;
+  display: block;
+  text-align: left;
+}
+
+.calendar-widget .add-event {
+  font-size: 0.8em;
+  border: none;
+  background: #ddd;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+}
+.calendar-today-events h3,
+.calendar-next-events h3 {
+  text-align: left;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+#today-events,
+#next-events {
+  text-align: left;
+  padding-left: 16px;
+  list-style: disc;
+}
+
+/* ===== カレンダープレビュー ===== */
+.calendar-preview {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 8px;
+  text-align: left;
+}
+
+.calendar-today {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.today-events {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.today-events li {
+  font-size: 0.9rem;
+  background: #f4f4f4;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+/* --------------------
+   カンバンウィジェット（ダッシュボード）
+-------------------- */
+.kanban-widget {
+  justify-content: flex-start !important;
+}
+.kanban-widget h3 {
+  text-align: center;
+  margin-top: 30px;
+}
+
+/* --- ステータスごとの色分け --- */
+.kanban-widget-column[data-status='not-stated'] h3 {
+  background-color: #fca5a5;
+}
+
+.kanban-widget-column[data-status='in-progress'] h3 {
+  background-color: #fbbf24;
+}
+
+.kanban-widget-column[data-status='complete'] h3 {
+  background-color: #4ade80;
+}
+
+/* --- タスク --- */
+.kanban-widget-task {
+  background: #fff;
+  color: #333;
+  padding: 5px 6px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: transform 0.1s ease;
+}
+
+.kanban-widget-task:hover {
+  transform: scale(1.02);
+  background: #f3f4f6;
+}
+
+/* --- 空の列 --- */
+.no-task {
+  text-align: center;
+  color: #aaa;
+  font-size: 0.8rem;
+}
+
+/* --- フッター --- */
+.kanban-widget-footer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  margin-top: auto;
+}
+/* --------------------
+   ウェザーウィジェット（ダッシュボード）
+-------------------- */
+/* 天気ウィジェット全体 */
+.weather-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 16px;
+}
+
+/* ヘッダー（都市名と天気の説明） */
+.weather-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.weather-header h3 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.weather-header .desc {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* メイン（アイコン＋温度情報） */
+.weather-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.weather-main img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 6px;
+}
+
+.temps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.temps .now {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.temps .feel,
+.temps .range {
+  font-size: 0.9rem;
+}
+
+.now {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #ff9800;
+}
+
+.feel {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.max {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.min {
+  color: #3498db;
+  opacity: 0.8;
+}
+
+.forecast {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  gap: 15px;
+}
+
+.forecast .day {
+  flex: 1;
+  text-align: center;
+}
+
+.forecast .day img {
+  width: 40px;
+  height: 40px;
+}
+
+.forecast .date {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.forecast {
+  font-size: 0.8rem;
+  color: #333;
+}
+.range .max {
+  color: #ff7043;
+}
+
+.range .min {
+  color: #0059fd;
+}
+
+/* --------------------
+   ダッシュボード全体の横並びレイアウト
+-------------------- */
+.dashboard-widgets {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 28px;
+  flex-wrap: wrap;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+/* 各ウィジェット（カンバン／天気／カレンダー）を均等サイズに */
+.dashboard-widgets .widget,
+.dashboard-widgets .widget-card {
+  flex: 1 1 31%;
+  min-width: 360px;
+  max-width: 420px;
+  height: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+/* 各ウィジェットの中身を均等に見せる */
+.widget,
+.widget-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.widget:hover,
+.widget-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* タイトルデザインの統一 */
+.widget h1,
+.widget h2 {
+  text-align: center;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1100px) {
+  .dashboard-widgets {
+    flex-wrap: wrap;
+  }
+  .dashboard-widgets .widget,
+  .dashboard-widgets .widget-card {
+    flex: 1 1 45%;
+    max-width: 500px;
+    height: auto;
+  }
+}
+
+@media (max-width: 700px) {
+  .dashboard-widgets {
+    flex-direction: column;
+    align-items: center;
+  }
+  .dashboard-widgets .widget,
+  .dashboard-widgets .widget-card {
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+  }
+}
+/* ===== ダッシュボード全体配置 ===== */
+.dashboard-widgets {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+  padding: 0 20px;
+}
+
+/* ===== 各ウィジェットの統一デザイン ===== */
+.widget {
+  flex: 1;
+  min-width: 380px;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+/* --------------------
+   🌗 テーマ切り替えボタン（画面右上固定）
+-------------------- */
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  z-index: 1000;
+}
+
+.theme-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.theme-btn.active {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.theme-btn:hover {
+  opacity: 0.8;
+}
+
+/* 背景テーマ */
+body[data-theme='light'] {
+  background: linear-gradient(to bottom right, #a8dadc, #457b9d);
+  color: rgb(0, 0, 0);
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+body[data-theme='dark'] {
+  background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
+  color: #ffffff;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* ウィジェットの背景を透明っぽく調整 */
+.widget {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+body[data-theme='dark'] .widget {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+/* ===== 🌙 ダークモード専用補正 ===== */
+body[data-theme='dark'] .calendar-widget,
+body[data-theme='dark'] .calendar-preview,
+body[data-theme='dark'] .kanban-widget-task {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fffefe;
+}
+
+body[data-theme='dark'] .calendar-widget h2,
+body[data-theme='dark'] .calendar-widget h3,
+body[data-theme='dark'] .calendar-widget strong,
+body[data-theme='dark'] .date,
+body[data-theme='dark'] .feel,
+body[data-theme='dark'] .desc,
+body[data-theme='dark'] #weather-widget h1 {
+  color: #fff;
+}
+
+body[data-theme='dark'] #today-events li,
+body[data-theme='dark'] #next-events li {
+  color: #f0f0f0;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+body[data-theme='dark'] .calendar-widget .event {
+  background: #4caf50;
+  color: #fff;
+}
+body[data-theme='dark'] .no-task {
+  color: rgb(255, 255, 255);
+}
+
+/* ===== ☀️ ライトモード専用補正 ===== */
+body[data-theme='light'] .no-task {
+  color: rgb(0, 0, 0);
+}
+
+/* ⚙ 設定ボタン（テーマ切り替えの横） */
+.settings-btn {
+  font-size: 1.5rem;
+  margin-left: 8px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.settings-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+/* モーダル背景 */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.hidden {
+  display: none;
+}
+
+/* 🌟 ガラス風設定モーダル本体 */
+.modal-content.glass {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  padding: 28px;
+  width: 300px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+  color: white;
+  text-align: center;
+}
+
+.save-btn {
+  margin-top: 16px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+/* ===============================
+   📱💻 レスポンシブレイアウト
+   3カラム → 2カラム → 1カラム
+=============================== */
+
+/* PC（3カラム） */
+.dashboard-widgets {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 28px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* PC サイズでの各ウィジェット */
+.dashboard-widgets .widget {
+  flex: 1 1 31%;
+  min-width: 360px;
+  max-width: 420px;
+  height: 480px;
+}
+
+/* タブレット（2カラム） */
+@media (max-width: 1100px) {
+  .dashboard-widgets .widget {
+    flex: 1 1 45%;
+    max-width: 500px;
+    height: auto;
+  }
+}
+
+/* スマホ（1カラム） */
+@media (max-width: 700px) {
+  .dashboard-widgets {
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+  }
+  @media (max-width: 700px) {
+    .header h1,
+    .header h1 span {
+      writing-mode: horizontal-tb !important; /* 横書き固定 */
+      white-space: normal !important; /* 普通の折り返し */
+      word-break: keep-all !important; /* 勝手に分割しない */
+      text-align: center;
+      display: block;
+    }
+  }
+
+  .dashboard-widgets .widget {
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+  }
+
+  /* ---- ウィジェット内の文字・画像を最適化 ---- */
+  .weather-widget h1,
+  .weather-widget h3,
+  .kanban-widget h3,
+  .calendar-widget h2 {
+    font-size: 1.1rem;
+  }
+
+  .temps .now {
+    font-size: 1.3rem;
+  }
+
+  .kanban-widget-task {
+    font-size: 0.8rem;
+  }
+
+  .weather-main img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .forecast .day img {
+    width: 32px;
+    height: 32px;
+  }
+}

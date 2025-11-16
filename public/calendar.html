@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>📅 カレンダー | パーソナルダッシュボード</title>
+
+    <!--<link rel="stylesheet" href="./styles/widgets.css" />-->
+    <link rel="stylesheet" href="./styles/calendar.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="header-inner">
+        <h1>📅 カレンダー</h1>
+        <a href="index.html" class="back-link">← ダッシュボードに戻る</a>
+      </div>
+    </header>
+
+    <main class="calendar-container">
+      <section id="calendar"></section>
+
+      <!-- ✅ 登録済み予定一覧（追加部分） -->
+      <section class="event-list-section">
+        <h2>📋 登録済みの予定一覧</h2>
+        <ul id="event-list">
+          <li>予定はまだありません。</li>
+        </ul>
+      </section>
+    </main>
+
+    <!-- モーダル -->
+    <div id="event-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3 id="selected-date"></h3>
+        <textarea id="event-text" placeholder="予定を入力..."></textarea>
+        <div class="modal-buttons">
+          <button id="save-event" class="primary-btn">保存</button>
+          <button id="close-modal" class="secondary-btn">閉じる</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>© 2025 Personal Dashboard</p>
+    </footer>
+
+    <script type="module" src="/scripts/calendar-main.js"></script>
+  </body>
+</html>

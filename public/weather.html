@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>全国週間天気</title>
+    <link rel="stylesheet" href="./styles/weather.css" />
+  </head>
+  <body>
+    <main class="weather-table-container">
+      <h1>🗾 全国週間天気</h1>
+
+      <!-- ダッシュボードに戻るリンク -->
+      <div class="back-link-container">
+        <a href="index.html" class="back-link">← ダッシュボードに戻る</a>
+      </div>
+
+      <table id="weather-table">
+        <thead>
+          <tr id="date-row">
+            <th>地域 / 都市</th>
+          </tr>
+        </thead>
+        <tbody id="weather-body"></tbody>
+      </table>
+    </main>
+
+    <script type="module" src="/scripts/weather-main.js"></script>
+  </body>
+</html>

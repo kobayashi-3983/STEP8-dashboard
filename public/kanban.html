@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>カンバンボード</title>
+    <meta name="description" content="カンバンボードを作ろう" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/kanban.css" />
+  </head>
+  <body>
+    <header class="main-text">
+      <h1>📋 カンバンボード</h1>
+      <a href="index.html" class="back-link">← ダッシュボードに戻る</a>
+    </header>
+
+    <div class="search-area">
+      <input type="text" class="search-text" placeholder="🔍 タスクを検索..." />
+    </div>
+
+    <div id="board">
+      <div class="column not-stated-col" data-status="not-stated">
+        <h2>未着手</h2>
+        <button class="add-task-btn">＋ タスクを追加</button>
+      </div>
+
+      <div class="column in-progress-col" data-status="in-progress">
+        <h2>進行中</h2>
+        <button class="add-task-btn">＋ タスクを追加</button>
+      </div>
+
+      <div class="column complete-col" data-status="complete">
+        <h2>完了</h2>
+        <button class="add-task-btn">＋ タスクを追加</button>
+      </div>
+
+      <div class="column end-col" data-status="end">
+        <h2>終了</h2>
+        <button class="add-task-btn">＋ タスクを追加</button>
+      </div>
+
+      <div class="column pending-col" data-status="pending">
+        <h2>保留</h2>
+        <button class="add-task-btn">＋ タスクを追加</button>
+      </div>
+    </div>
+
+    <script type="module" src="/scripts/kanban-main.js"></script>
+  </body>
+</html>
