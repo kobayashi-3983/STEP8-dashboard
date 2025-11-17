@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "type": "commonjs",
   "scripts": {
-    "build:client": "tsc -p tsconfig.client.json && xcopy public dist\\public /E /I /Y /EXCLUDE:exclude.txt",
-    "build:server": "tsc -p tsconfig.server.json",
-    "build": "npm run build:client && npm run build:server",
-    "start": "node dist/server/index.js",
-    "dev": "ts-node-dev --respawn --transpile-only --project tsconfig.server.json server/index.ts"
-  },
+  "build:client": "tsc -p tsconfig.client.json && robocopy public dist\\public /E /XD server /XF *.ts",
+  "build:server": "tsc -p tsconfig.server.json",
+  "build": "npm run build:client && npm run build:server",
+  "start": "node dist/server/index.js",
+  "dev": "ts-node-dev --respawn --transpile-only --project tsconfig.server.json server/index.ts"
+},
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
