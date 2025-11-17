@@ -1,13 +1,12 @@
 // Node.js で public → dist/public をコピーする
-// .ts と server フォルダは除外
+// .ts と server フォルダは完全除外
 
 import fs from "fs";
 import path from "path";
 
-const srcDir = path.join("public");
-const destDir = path.join("dist", "public");
+const srcDir = "public";
+const destDir = "dist/public";
 
-// 再帰コピー関数
 function copyDir(src, dest) {
   if (!fs.existsSync(dest)) {
     fs.mkdirSync(dest, { recursive: true });
@@ -18,9 +17,9 @@ function copyDir(src, dest) {
     const destPath = path.join(dest, item);
     const stat = fs.statSync(srcPath);
 
-    // 除外条件
-    if (item.endsWith(".ts")) continue;      // TS除外
-    if (item === "server") continue;         // server除外
+    // 除外ルール
+    if (item.endsWith(".ts")) continue;        // TS は除外
+    if (item === "server") continue;           // server フォルダ除外
 
     if (stat.isDirectory()) {
       copyDir(srcPath, destPath);
@@ -32,4 +31,4 @@ function copyDir(src, dest) {
 
 copyDir(srcDir, destDir);
 
-console.log("✔ public → dist/public をコピーしました (TS除外, server除外)");
+console.log("✔ public → dist/public をコピーしました (TS・server 完全除外)");
